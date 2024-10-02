@@ -17,7 +17,7 @@ export const ItemComponent = ({item, toggleItemCheck, deleteItem}: {
         <div style={{margin: '0 1rem'}}>
             <input type="checkbox" checked={item.done}
                    onChange={e => toggleItemCheck({checked: e.target.checked, item})}/>
-            {item.name}
+            <span style={{margin: '0 0.5rem'}}>{item.name}</span>
         </div>
         <div style={{margin: '0 1rem'}}>
             <FontAwesomeIcon icon={faTrash} onClick={() => deleteItem(item)}/>

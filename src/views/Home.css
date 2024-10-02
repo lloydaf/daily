@@ -19,3 +19,23 @@
 .link {
     cursor: pointer;
 }
+
+.button {
+    padding: 0.5rem 2rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+.button:hover {
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+}
+
+.outline {
+    width: 50%;
+    minWidth: fit-content;
+    border: 1px solid black;
+    border-radius: 1rem;
+    margin: 1rem;
+    bottom: 50%;
+    position: absolute;
+}

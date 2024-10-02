@@ -44,30 +44,28 @@ export const Home = () => {
     }
 
     const deleteItem: DeleteItem = item => {
-        prompt(`Are you sure you want to delete ${item.name}? Yes/No`, "No") === "Yes" && setDailyItems(dailyItems.filter(dailyItem => dailyItem.name !== item.name))
+        if(prompt(`Are you sure you want to delete "${item.name}"? Yes / No`, "No") === "Yes"){
+            const items = dailyItems.filter(dailyItem => dailyItem.name !== item.name)
+            localStorage.setItem(dateStr, JSON.stringify(items))
+            setDailyItems(items)
+        }
     }
 
     return (
         <div className="flex row">
-            <div style={{
-                width: '50%',
-                minWidth: 'fit-content',
-                border: '1px solid black',
-                margin: '1rem',
-                bottom: '50%',
-                position: 'absolute'
-            }}
-                 className="flex column">
+            <div
+                 className="flex column outline">
                 <h1>{dateStr}</h1>
                 <div style={{width: '100%', margin: '0.5rem 1rem'}} className="flex row">
                     <h2 className="link" onClick={() => setDateOffset(-1)}>Yesterday's tasks</h2>
                     <h1 className="link" onClick={() => setDateOffset(0)}>Today's tasks</h1>
                     <h2 className="link" onClick={() => setDateOffset(1)}>Tomorrow's tasks</h2>
                 </div>
-                <button onClick={addItem} disabled={dateOffset === -1}>Add Item</button>
+                <button className="button" onClick={addItem} disabled={dateOffset === -1}>Add Task</button>
                 {dailyItems.map((item, index) => (
                     <ItemComponent key={index} item={item} toggleItemCheck={toggleItemCheck} deleteItem={deleteItem}/>
                 ))}
+                {dailyItems.length === 0 && <h3>No tasks for the day</h3>}
             </div>
         </div>
     )
