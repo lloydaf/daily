@@ -12,7 +12,7 @@ export const Home = () => {
 
     useEffect(() => {
         localStorage.setItem(dateStr, JSON.stringify(dailyItems))
-    }, [dailyItems])
+    }, [dailyItems, dateStr])
 
     const addItem = () => {
         const newItem = prompt("Enter item to add", "")
