@@ -1,12 +1,11 @@
-import React from 'react';
 import './App.css';
 
 import { Home } from './views/Home';
 
 function App() {
-  return (
-    <Home/>
-  );
+    return (
+        <Home/>
+    );
 }
 
 export default App;
