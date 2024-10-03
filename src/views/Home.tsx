@@ -29,7 +29,7 @@ export const Home = () => {
 
     useEffect(() => {
         dailyItems.length && localStorage.setItem(dateStr, JSON.stringify(dailyItems))
-    }, [dailyItems, dateStr])
+    }, [dailyItems])
 
     const addItem = () => {
         const newItem = prompt("Enter item to add", "")
@@ -46,7 +46,12 @@ export const Home = () => {
     const deleteItem: DeleteItem = item => {
         if(prompt(`Are you sure you want to delete "${item.name}"? Yes / No`, "No") === "Yes"){
             const items = dailyItems.filter(dailyItem => dailyItem.name !== item.name)
-            localStorage.setItem(dateStr, JSON.stringify(items))
+            if(items.length) {
+                localStorage.setItem(dateStr, JSON.stringify(items))
+            }
+            else {
+                localStorage.removeItem(dateStr)
+            }
             setDailyItems(items)
         }
     }
