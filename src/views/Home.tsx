@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ItemComponent } from "../components/Item";
 import { DeleteItem, Item, ToggleItemCheck } from "../types/types";
 import './Home.css'
@@ -62,9 +64,15 @@ export const Home = () => {
                  className="flex column outline">
                 <h1>{dateStr}</h1>
                 <div style={{width: '100%', margin: '0.5rem 1rem'}} className="flex row">
-                    <h2 className="link" onClick={() => setDateOffset(-1)}>Yesterday's tasks</h2>
+                    <div className="link flex row" onClick={() => setDateOffset(-1)}>
+                        <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faBackward} />
+                        <h2>Yesterday's tasks</h2>
+                    </div>
                     <h1 className="link" onClick={() => setDateOffset(0)}>Today's tasks</h1>
-                    <h2 className="link" onClick={() => setDateOffset(1)}>Tomorrow's tasks</h2>
+                    <div className="link flex row" onClick={() => setDateOffset(1)}>
+                        <h2>Tomorrow's tasks</h2>
+                        <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faForward}/>
+                    </div>
                 </div>
                 <button className="button" onClick={addItem} disabled={dateOffset === -1}>Add Task</button>
                 {dailyItems.map((item, index) => (
