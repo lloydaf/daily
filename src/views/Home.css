@@ -24,6 +24,7 @@
     padding: 0.5rem 2rem;
     background-color: white;
     cursor: pointer;
+    margin-bottom: 2rem;
 }
 
 .button:hover {
@@ -31,11 +32,8 @@
 }
 
 .outline {
-    width: 50%;
-    minWidth: fit-content;
+    min-width: fit-content;
+    min-height: fit-content;
     border: 1px solid black;
-    border-radius: 1rem;
-    margin: 1rem;
-    bottom: 50%;
-    position: absolute;
+    margin: 2rem;
 }

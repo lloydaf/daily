@@ -1,26 +1,27 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import { DeleteItem, Item, ToggleItemCheck } from "../types/types";
+import { faTrash, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { ItemFunction, Item, ToggleItemCheck } from "../types/types";
 import './Item.css'
 
-export const ItemComponent = ({item, toggleItemCheck, deleteItem}: {
+export const ItemComponent = ({ item, toggleItemCheck, deleteItem, moveToNextDay, dateOffset }: {
     item: Item,
     toggleItemCheck: ToggleItemCheck,
-    deleteItem: DeleteItem
+    deleteItem: ItemFunction,
+    moveToNextDay: ItemFunction,
+    dateOffset: number
 }) =>
-    <div style={{
-        margin: '0.5rem 1rem',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    }}>
-        <div style={{margin: '0 1rem'}}>
-            <input type="checkbox" checked={item.done}
+    <div className="item-container">
+        <div className="item">
+            <input title="Mark as done" type="checkbox" checked={item.done}
                    onChange={e => toggleItemCheck({checked: e.target.checked, item})}/>
             <span className={item.done ? "strikethrough" : ""} style={{margin: '0 0.5rem'}}>{item.name}</span>
         </div>
-        <div style={{margin: '0 1rem'}}>
-            <FontAwesomeIcon icon={faTrash} onClick={() => deleteItem(item)}/>
+        <div className="action-container">
+            <button className="action-button" disabled={item.done || dateOffset === 1}>
+                <FontAwesomeIcon title="Move to next day" icon={faArrowRight} onClick={() => moveToNextDay(item)}/>
+            </button>
+            <button className="action-button">
+                <FontAwesomeIcon title="Delete" icon={faTrash} onClick={() => deleteItem(item)}/>
+            </button>
         </div>
     </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ItemComponent } from "../components/Item";
-import { DeleteItem, Item, ToggleItemCheck } from "../types/types";
+import { ItemFunction, Item, ToggleItemCheck } from "../types/types";
 import './Home.css'
 
 export const Home = () => {
@@ -35,19 +35,19 @@ export const Home = () => {
 
     const addItem = () => {
         const newItem = prompt("Enter item to add", "")
-        newItem && setDailyItems([...dailyItems, {name: newItem, done: false}])
+        newItem && setDailyItems([...dailyItems, {name: newItem, done: false, id: Date.now()}])
     }
 
     const toggleItemCheck: ToggleItemCheck = ({checked, item}) => {
         setDailyItems([
-            ...dailyItems.filter(dailyItem => dailyItem.name !== item.name && !item.done),
-            {name: item.name, done: checked},
-            ...dailyItems.filter(dailyItem => dailyItem.name !== item.name && item.done)])
+            ...dailyItems.filter(dailyItem => dailyItem.id !== item.id && !item.done),
+            {name: item.name, done: checked, id: item.id},
+            ...dailyItems.filter(dailyItem => dailyItem.id !== item.id && item.done)])
     }
 
-    const deleteItem: DeleteItem = item => {
+    const deleteItem: ItemFunction = item => {
         if(prompt(`Are you sure you want to delete "${item.name}"? Yes / No`, "No") === "Yes"){
-            const items = dailyItems.filter(dailyItem => dailyItem.name !== item.name)
+            const items = dailyItems.filter(dailyItem => dailyItem.id !== item.id)
             if(items.length) {
                 localStorage.setItem(dateStr, JSON.stringify(items))
             }
@@ -58,27 +58,56 @@ export const Home = () => {
         }
     }
 
+    const moveToNextDay: ItemFunction = item => {
+        if(prompt(`Are you sure you want to move "${item.name}" to the next day? Yes / No`, "No") === "Yes") {
+            const date = new Date();
+            date.setHours(0, 0, 0, 0);
+            date.setDate(date.getDate() + dateOffset + 1);
+            const nextDateStr = date.toDateString();
+            try {
+                const nextDayItems = JSON.parse(localStorage.getItem(nextDateStr)!)
+                localStorage.setItem(nextDateStr, JSON.stringify([...nextDayItems, item]))
+            } catch (e: unknown) {
+                localStorage.setItem(nextDateStr, JSON.stringify([item]))
+            }
+
+            const items = dailyItems.filter(dailyItem => dailyItem.id !== item.id)
+            if (items.length) {
+                localStorage.setItem(dateStr, JSON.stringify(items))
+            } else {
+                localStorage.removeItem(dateStr)
+            }
+            setDailyItems(items)
+        }
+    }
+
     return (
         <div className="flex row">
-            <div
-                 className="flex column outline">
-                <h1>{dateStr}</h1>
+            <div className="flex column outline">
+                <h2>{dateStr}</h2>
                 <div style={{width: '100%', margin: '0.5rem 1rem'}} className="flex row">
                     <div className="link flex row" onClick={() => setDateOffset(-1)}>
                         <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faBackward} />
-                        <h2>Yesterday's tasks</h2>
+                        <h3>Yesterday's tasks</h3>
                     </div>
                     <h1 className="link" onClick={() => setDateOffset(0)}>Today's tasks</h1>
                     <div className="link flex row" onClick={() => setDateOffset(1)}>
-                        <h2>Tomorrow's tasks</h2>
+                        <h3>Tomorrow's tasks</h3>
                         <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faForward}/>
                     </div>
                 </div>
                 <button className="button" onClick={addItem} disabled={dateOffset === -1}>Add Task</button>
                 {dailyItems.map((item, index) => (
-                    <ItemComponent key={index} item={item} toggleItemCheck={toggleItemCheck} deleteItem={deleteItem}/>
+                    <ItemComponent
+                        key={index}
+                        item={item}
+                        toggleItemCheck={toggleItemCheck}
+                        deleteItem={deleteItem}
+                        moveToNextDay={moveToNextDay}
+                        dateOffset={dateOffset}
+                    />
                 ))}
-                {dailyItems.length === 0 && <h3>No tasks for the day</h3>}
+                {dailyItems.length === 0 && <h4>No tasks for the day</h4>}
             </div>
         </div>
     )
