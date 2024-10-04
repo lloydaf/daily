@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ItemComponent } from "../components/Item";
-import { ItemFunction, Item, ToggleItemCheck } from "../types/types";
+import { ItemFunction, Item } from "../types/types";
 import './Home.css'
 
 export const Home = () => {
@@ -38,10 +38,10 @@ export const Home = () => {
         newItem && setDailyItems([...dailyItems, {name: newItem, done: false, id: Date.now()}])
     }
 
-    const toggleItemCheck: ToggleItemCheck = ({checked, item}) => {
+    const toggleItemCheck: ItemFunction = (item) => {
         setDailyItems([
             ...dailyItems.filter(dailyItem => dailyItem.id !== item.id && !item.done),
-            {name: item.name, done: checked, id: item.id},
+            {name: item.name, done: !item.done, id: item.id},
             ...dailyItems.filter(dailyItem => dailyItem.id !== item.id && item.done)])
     }
 
@@ -88,11 +88,11 @@ export const Home = () => {
                 <div style={{width: '100%', margin: '0.5rem 1rem'}} className="flex row">
                     <div className="link flex row" onClick={() => setDateOffset(-1)}>
                         <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faBackward} />
-                        <h3>Yesterday's tasks</h3>
+                        <h3 className={dateOffset === -1 ? 'active' : 'passive'}>Yesterday's tasks</h3>
                     </div>
-                    <h1 className="link" onClick={() => setDateOffset(0)}>Today's tasks</h1>
+                    <h1 className={`link ${dateOffset === 0 ? 'active' : 'passive'}`} onClick={() => setDateOffset(0)}>Today's tasks</h1>
                     <div className="link flex row" onClick={() => setDateOffset(1)}>
-                        <h3>Tomorrow's tasks</h3>
+                        <h3 className={dateOffset === 1 ? 'active' : 'passive'}>Tomorrow's tasks</h3>
                         <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faForward}/>
                     </div>
                 </div>
