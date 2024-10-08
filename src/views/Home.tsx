@@ -30,7 +30,7 @@ export const Home = () => {
     }, [dateOffset]);
 
     useEffect(() => {
-        dailyItems.length && localStorage.setItem(dateStr, JSON.stringify(dailyItems))
+        dailyItems.length && localStorage.setItem(dateStr, JSON.stringify(dailyItems.filter(item => item.name !== "")))
     }, [dailyItems])
 
     const addItem = () => {
