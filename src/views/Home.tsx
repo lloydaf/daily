@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ItemComponent } from "../components/Item";
-import {ItemFunction, Item, createItem} from "../types/types";
+import { ItemFunction, Item, createItem } from "../types/types";
+import { LocalStorageService } from "../utils/LocalStorageService";
 import './Home.css'
+
 
 export const Home = () => {
     const [dateOffset, setDateOffset] = useState(0)
-    const [dateStr, setDateStr] = useState("")
+    const [dateStr, setDateStr] = useState<number>()
     const [dailyItems, setDailyItems] = useState<Item[]>([])
 
     useEffect(() => {
@@ -15,14 +17,13 @@ export const Home = () => {
             const date = new Date();
             date.setHours(0, 0, 0, 0);
             date.setDate(date.getDate() + dateOffset);
-            const dateStr = date.toDateString();
-
+            const dateStr = date.valueOf()
             setDateStr(dateStr)
 
-            const item = JSON.parse(localStorage.getItem(dateStr)!)
+            const item = JSON.parse(LocalStorageService.getItem(dateStr)!)
             const length = item.length
             if (length) {
-                setDailyItems(JSON.parse(localStorage.getItem(dateStr)!))
+                setDailyItems(JSON.parse(LocalStorageService.getItem(dateStr)!))
             }
         } catch (e: unknown) {
             setDailyItems([])
@@ -30,7 +31,7 @@ export const Home = () => {
     }, [dateOffset]);
 
     useEffect(() => {
-        dailyItems.length && localStorage.setItem(dateStr, JSON.stringify(dailyItems.filter(item => item.name !== "")))
+        dailyItems.length && LocalStorageService.setItem(dateStr, JSON.stringify(dailyItems.filter(item => item.name !== "")))
     }, [dailyItems])
 
     const addItem = () => {
@@ -50,10 +51,10 @@ export const Home = () => {
         if(prompt(`Are you sure you want to delete "${item.name}"? Yes / No`, "No") === "Yes"){
             const items = dailyItems.filter(dailyItem => dailyItem.id !== item.id)
             if(items.length) {
-                localStorage.setItem(dateStr, JSON.stringify(items))
+                LocalStorageService.setItem(dateStr, JSON.stringify(items))
             }
             else {
-                localStorage.removeItem(dateStr)
+                LocalStorageService.removeItem(dateStr)
             }
             setDailyItems(items)
         }
@@ -65,19 +66,19 @@ export const Home = () => {
             const date = new Date();
             date.setHours(0, 0, 0, 0);
             date.setDate(date.getDate() + dateOffset + 1);
-            const nextDateStr = date.toDateString();
+            const nextDateStr = date.valueOf();
             try {
-                const nextDayItems = JSON.parse(localStorage.getItem(nextDateStr)!)
-                localStorage.setItem(nextDateStr, JSON.stringify([...nextDayItems, item]))
+                const nextDayItems = JSON.parse(LocalStorageService.getItem(nextDateStr)!)
+                LocalStorageService.setItem(nextDateStr, JSON.stringify([...nextDayItems, item]))
             } catch (e: unknown) {
-                localStorage.setItem(nextDateStr, JSON.stringify([item]))
+                LocalStorageService.setItem(nextDateStr, JSON.stringify([item]))
             }
 
             const items = dailyItems.filter(dailyItem => dailyItem.id !== item.id)
             if (items.length) {
-                localStorage.setItem(dateStr, JSON.stringify(items))
+                LocalStorageService.setItem(dateStr, JSON.stringify(items))
             } else {
-                localStorage.removeItem(dateStr)
+                LocalStorageService.removeItem(dateStr)
             }
             setDailyItems(items)
         }
@@ -86,7 +87,7 @@ export const Home = () => {
     return (
         <div className="flex row">
             <div className="flex column outline">
-                <h2>{dateStr}</h2>
+                {dateStr && <h2>{new Date(dateStr).toDateString()}</h2>}
                 <div style={{width: '100%', margin: '0.5rem 1rem'}} className="flex row">
                     <div className="link flex row" onClick={() => setDateOffset(-1)}>
                         <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faBackward} />
