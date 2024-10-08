@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ItemComponent } from "../components/Item";
-import { ItemFunction, Item } from "../types/types";
+import {ItemFunction, Item, createItem} from "../types/types";
 import './Home.css'
 
 export const Home = () => {
@@ -34,15 +34,16 @@ export const Home = () => {
     }, [dailyItems])
 
     const addItem = () => {
-        const newItem = prompt("Enter item to add", "")
-        newItem && setDailyItems([...dailyItems, {name: newItem, done: false, id: Date.now()}])
+        const newItem = createItem()
+        setDailyItems([...dailyItems, newItem])
+    }
+
+    const onEdit: ItemFunction = item => {
+        setDailyItems(dailyItems => dailyItems.map(dailyItem => dailyItem.id === item.id ? item : dailyItem))
     }
 
     const toggleItemCheck: ItemFunction = (item) => {
-        setDailyItems([
-            ...dailyItems.filter(dailyItem => dailyItem.id !== item.id && !item.done),
-            {name: item.name, done: !item.done, id: item.id},
-            ...dailyItems.filter(dailyItem => dailyItem.id !== item.id && item.done)])
+        setDailyItems(dailyItems => dailyItems.map(dailyItem => dailyItem.id !== item.id ? dailyItem : {...item, done: !item.done}))
     }
 
     const deleteItem: ItemFunction = item => {
@@ -57,6 +58,7 @@ export const Home = () => {
             setDailyItems(items)
         }
     }
+
 
     const moveToNextDay: ItemFunction = item => {
         if(prompt(`Are you sure you want to move "${item.name}" to the next day? Yes / No`, "No") === "Yes") {
@@ -96,7 +98,7 @@ export const Home = () => {
                         <FontAwesomeIcon style={{margin: '0 0.5rem'}}  icon={faForward}/>
                     </div>
                 </div>
-                <button className="button" onClick={addItem} disabled={dateOffset === -1}>Add Task</button>
+                <button className="button" onClick={() => addItem()} disabled={dateOffset === -1}>Add Task</button>
                 {dailyItems.map((item, index) => (
                     <ItemComponent
                         key={index}
@@ -105,6 +107,7 @@ export const Home = () => {
                         deleteItem={deleteItem}
                         moveToNextDay={moveToNextDay}
                         dateOffset={dateOffset}
+                        onEdit={onEdit}
                     />
                 ))}
                 {dailyItems.length === 0 && <h4>No tasks for the day</h4>}

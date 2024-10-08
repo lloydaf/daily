@@ -20,12 +20,19 @@
 .item-content {
     margin-left: 1rem;
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .action-container {
     margin: 0 1rem;
     height: 2rem;
     display: flex;
+    visibility: hidden;
+}
+
+.action-container.visible {
+    visibility: visible;
 }
 
 .action-button {
@@ -41,4 +48,18 @@
 
 .action-button:hover {
     background-color: #f0f0f0;
+}
+
+.text-input {
+    margin: 0;
+    height: 100%;
+    min-width: 100%;
+    font-size: 1rem;
+    font-family: Comic Sans MS, serif;
+    border: none;
+    overflow-x: scroll;
+}
+
+.done-checkbox {
+    margin-right: 0.5rem;
 }
