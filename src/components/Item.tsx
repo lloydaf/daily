@@ -43,7 +43,7 @@ export const ItemComponent = ({ item, toggleItemCheck, deleteItem, moveToNextDay
             <input title="Mark as done" type="checkbox" checked={item.done}
                    onChange={() => toggleItemCheck(item)} disabled={edit} className="done-checkbox"/>
             {edit ? (<>
-                <input type="text" maxLength={48} className="text-input" value={temp} onChange={(e) => setTemp(e.target.value)}/>
+                <input autoFocus type="text" maxLength={48} className="text-input" value={temp} onChange={(e) => setTemp(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && saveEdit()}/>
             </>) : (<span className={item.done ? "strikethrough" : ""}>{item.name}</span>)}
         </div>
         <div className={`action-container ${hover ? 'visible' : ''}`}>
