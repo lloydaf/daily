@@ -1,0 +1,1 @@
+export const Archive = () => <p>Archive!</p>
