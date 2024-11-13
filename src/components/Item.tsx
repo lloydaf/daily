@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
   faCheck,
   faEdit,
   faTrash,
   faX,
-} from "@fortawesome/free-solid-svg-icons";
-import { Item, ItemFunction } from "../types/types";
-import "./Item.css";
+} from '@fortawesome/free-solid-svg-icons'
+import { Item, ItemFunction } from '../types/types'
+import './Item.css'
 
 export const ItemComponent = ({
   item,
@@ -18,35 +18,35 @@ export const ItemComponent = ({
   dateOffset,
   onEdit,
 }: {
-  item: Item;
-  toggleItemCheck: ItemFunction;
-  deleteItem: ItemFunction;
-  moveToNextDay: ItemFunction;
-  onEdit: ItemFunction;
-  dateOffset: number;
+  item: Item
+  toggleItemCheck: ItemFunction
+  deleteItem: ItemFunction
+  moveToNextDay: ItemFunction
+  onEdit: ItemFunction
+  dateOffset: number
 }) => {
-  const [hover, setHover] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [temp, setTemp] = useState<string>(item.name);
+  const [hover, setHover] = useState(false)
+  const [edit, setEdit] = useState(false)
+  const [temp, setTemp] = useState<string>(item.name)
 
   const saveEdit = () => {
-    onEdit({ ...item, name: temp });
-    setEdit(false);
-  };
+    onEdit({ ...item, name: temp })
+    setEdit(false)
+  }
 
   const clear = () => {
     if (temp === item.name) {
-      setEdit(false);
+      setEdit(false)
     } else {
-      setTemp(item.name);
+      setTemp(item.name)
     }
-  };
+  }
 
   useEffect(() => {
-    if (temp === "") {
-      setEdit(true);
+    if (temp === '') {
+      setEdit(true)
     }
-  }, [temp]);
+  }, [temp])
 
   return (
     <div
@@ -75,26 +75,26 @@ export const ItemComponent = ({
               className="text-input"
               value={temp}
               onChange={(e) => setTemp(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && saveEdit()}
+              onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
             />
           </>
         ) : (
-          <span className={item.done ? "strikethrough" : ""}>{item.name}</span>
+          <span className={item.done ? 'strikethrough' : ''}>{item.name}</span>
         )}
       </div>
-      <div className={`action-container ${hover ? "visible" : ""}`}>
+      <div className={`action-container ${hover ? 'visible' : ''}`}>
         {edit ? (
           <>
             <button
               className="action-button"
-              disabled={item.done || temp === ""}
+              disabled={item.done || temp === ''}
               onClick={() => saveEdit()}
             >
               <FontAwesomeIcon title="Save" icon={faCheck} />
             </button>
             <button
               className="action-button"
-              disabled={item.done || temp === ""}
+              disabled={item.done || temp === ''}
               onClick={() => clear()}
             >
               <FontAwesomeIcon title="Cancel" icon={faX} />
@@ -123,5 +123,5 @@ export const ItemComponent = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
