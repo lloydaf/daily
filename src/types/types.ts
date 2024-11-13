@@ -1,13 +1,13 @@
 export interface Item {
-    name: string
-    done: boolean
-    id: number
+  name: string;
+  done: boolean;
+  id: number;
 }
 
 export const createItem = (): Item => ({
-    name: "",
-    done: false,
-    id: Date.now(),
-})
+  name: "",
+  done: false,
+  id: Date.now(),
+});
 
-export type ItemFunction = (item: Item) => void
+export type ItemFunction = (item: Item) => void;
