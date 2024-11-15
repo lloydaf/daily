@@ -6,7 +6,7 @@ export const LocalStorageService = {
       const existingItems = JSON.parse(localStorage.getItem(storageKey)!)
       return existingItems[key] || []
     } catch (e) {
-      console.warn('Error getting items from local storage', e)
+      console.error('Error getting items from local storage', e)
       return null
     }
   },
@@ -24,8 +24,15 @@ export const LocalStorageService = {
       delete existingItems[key]
       localStorage.setItem(storageKey, JSON.stringify(existingItems))
     } catch (e) {
-      console.warn('Error deleting items from local storage', e)
+      console.error('Error deleting items from local storage', e)
       return null
+    }
+  },
+  getAll() {
+    try {
+      return JSON.parse(localStorage.getItem(storageKey)!)
+    } catch (e) {
+      console.error('Could not fetch items', e)
     }
   },
 }

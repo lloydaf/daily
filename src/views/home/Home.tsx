@@ -119,7 +119,13 @@ export const Home = () => {
   }
 
   return (
-    <div className="flex row">
+    <div className="flex column">
+      <Link
+        style={{ alignSelf: 'flex-end', margin: '0.5rem 1rem' }}
+        to="/daily/archive"
+      >
+        Archive
+      </Link>
       <div className="flex column outline">
         {dateStr && <h2>{new Date(dateStr).toDateString()}</h2>}
         <div
@@ -165,7 +171,6 @@ export const Home = () => {
         ))}
         {dailyItems.length === 0 && <h4>No tasks for the day</h4>}
       </div>
-      <Link to="/daily/archive">Archive</Link>
     </div>
   )
 }
