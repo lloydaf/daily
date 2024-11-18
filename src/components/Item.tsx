@@ -102,23 +102,32 @@ export const ItemComponent = ({
           </>
         ) : (
           <>
-            <button
-              className="action-button"
-              disabled={item.done}
-              onClick={() => setEdit(true)}
-            >
-              <FontAwesomeIcon title="Edit" icon={faEdit} />
-            </button>
-            <button
-              className="action-button"
-              disabled={item.done || dateOffset === 1}
-              onClick={() => moveToNextDay?.(item)}
-            >
-              <FontAwesomeIcon title="Move to next day" icon={faArrowRight} />
-            </button>
-            <button className="action-button" onClick={() => deleteItem?.(item)}>
-              <FontAwesomeIcon title="Delete" icon={faTrash} />
-            </button>
+            {onEdit && (
+              <button
+                className="action-button"
+                disabled={item.done}
+                onClick={() => setEdit(true)}
+              >
+                <FontAwesomeIcon title="Edit" icon={faEdit} />
+              </button>
+            )}
+            {moveToNextDay && (
+              <button
+                className="action-button"
+                disabled={item.done || dateOffset === 1}
+                onClick={() => moveToNextDay?.(item)}
+              >
+                <FontAwesomeIcon title="Move to next day" icon={faArrowRight} />
+              </button>
+            )}
+            {deleteItem && (
+              <button
+                className="action-button"
+                onClick={() => deleteItem?.(item)}
+              >
+                <FontAwesomeIcon title="Delete" icon={faTrash} />
+              </button>
+            )}
           </>
         )}
       </div>
