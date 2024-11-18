@@ -4,7 +4,7 @@ import { Item } from '../../types/types'
 import { Link } from 'react-router-dom'
 import { ItemComponent } from '../../components/Item'
 import { getDate } from '../../utils/Dates'
-
+import './Archive.css'
 type DateStringRep = {
   date: string
   value: Item[]

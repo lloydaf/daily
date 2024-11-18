@@ -1,0 +1,3 @@
+.item-container, .done-checkbox {
+    cursor: not-allowed;
+}
