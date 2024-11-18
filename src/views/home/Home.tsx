@@ -7,6 +7,7 @@ import { ItemFunction, Item, createItem } from '../../types/types'
 import { LocalStorageService } from '../../utils/LocalStorageService'
 import './Home.css'
 import { Link } from 'react-router-dom'
+import { getDate } from '../../utils/Dates'
 
 export const Home = () => {
   const [dateOffset, setDateOffset] = useState(0)
@@ -15,9 +16,7 @@ export const Home = () => {
 
   useEffect(() => {
     try {
-      const date = new Date()
-      date.setHours(0, 0, 0, 0)
-      date.setDate(date.getDate() + dateOffset)
+      const date = getDate(dateOffset)
       const dateStr = date.valueOf()
       setDateStr(dateStr)
 
@@ -91,9 +90,7 @@ export const Home = () => {
         'No',
       ) === 'Yes'
     ) {
-      const date = new Date()
-      date.setHours(0, 0, 0, 0)
-      date.setDate(date.getDate() + dateOffset + 1)
+      const date = getDate(dateOffset + 1)
       const nextDateStr = date.valueOf()
       try {
         const nextDayItems = JSON.parse(

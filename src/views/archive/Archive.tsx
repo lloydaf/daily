@@ -2,28 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { LocalStorageService } from '../../utils/LocalStorageService'
 import { Item } from '../../types/types'
 import { Link } from 'react-router-dom'
-import { ItemComponent } from "../../components/Item"
+import { ItemComponent } from '../../components/Item'
+import { getDate } from '../../utils/Dates'
 
 type DateStringRep = {
   date: string
   value: Item[]
 }
 
+
 export const Archive = () => {
   const [items, setItems] = useState<DateStringRep[]>()
   useEffect(() => {
+    const today = getDate(0)
     const storedItems = LocalStorageService.getAll()
-
-    const parsedItems: DateStringRep[] = Object.entries<string>(
-      storedItems,
-    ).map(([key, value]: [string, string]) => {
-      const date = new Date(Number(key))
-      console.log('date', date.toDateString())
-      return {
-        date: date.toDateString(),
-        value: JSON.parse(value) as Item[],
-      }
-    })
+    const parsedItems: DateStringRep[] = Object.entries<string>(storedItems)
+      .filter(([key, _]) => new Date(Number(key)) < today)
+      .map(([key, value]: [string, string]) => {
+        const date = new Date(Number(key))
+        return {
+          date: date.toDateString(),
+          value: JSON.parse(value) as Item[],
+        }
+      })
     setItems(parsedItems)
   }, [])
   return (
@@ -34,7 +35,7 @@ export const Archive = () => {
           <div key={day.date}>
             <h2>{day.date}</h2>
             {day.value.map((item: Item) => (
-              <ItemComponent item={item} />
+              <ItemComponent key={item.id} item={item} />
             ))}
           </div>
         ))}
