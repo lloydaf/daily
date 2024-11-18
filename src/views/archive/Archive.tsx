@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { LocalStorageService } from '../../utils/LocalStorageService'
 import { Item } from '../../types/types'
 import { Link } from 'react-router-dom'
+import { ItemComponent } from "../../components/Item"
 
 type DateStringRep = {
   date: string
@@ -33,7 +34,7 @@ export const Archive = () => {
           <div key={day.date}>
             <h2>{day.date}</h2>
             {day.value.map((item: Item) => (
-              <li key={item.name}>{item.name}</li>
+              <ItemComponent item={item} />
             ))}
           </div>
         ))}

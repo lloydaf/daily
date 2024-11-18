@@ -19,18 +19,18 @@ export const ItemComponent = ({
   onEdit,
 }: {
   item: Item
-  toggleItemCheck: ItemFunction
-  deleteItem: ItemFunction
-  moveToNextDay: ItemFunction
-  onEdit: ItemFunction
-  dateOffset: number
+  toggleItemCheck?: ItemFunction
+  deleteItem?: ItemFunction
+  moveToNextDay?: ItemFunction
+  onEdit?: ItemFunction
+  dateOffset?: number
 }) => {
   const [hover, setHover] = useState(false)
   const [edit, setEdit] = useState(false)
   const [temp, setTemp] = useState<string>(item.name)
 
   const saveEdit = () => {
-    onEdit({ ...item, name: temp })
+    onEdit?.({ ...item, name: temp })
     setEdit(false)
   }
 
@@ -56,13 +56,13 @@ export const ItemComponent = ({
     >
       <div
         className="item-content"
-        onClick={() => hover && !edit && toggleItemCheck(item)}
+        onClick={() => hover && !edit && toggleItemCheck?.(item)}
       >
         <input
           title="Mark as done"
           type="checkbox"
           checked={item.done}
-          onChange={() => toggleItemCheck(item)}
+          onChange={() => toggleItemCheck?.(item)}
           disabled={edit}
           className="done-checkbox"
         />
@@ -112,11 +112,11 @@ export const ItemComponent = ({
             <button
               className="action-button"
               disabled={item.done || dateOffset === 1}
-              onClick={() => moveToNextDay(item)}
+              onClick={() => moveToNextDay?.(item)}
             >
               <FontAwesomeIcon title="Move to next day" icon={faArrowRight} />
             </button>
-            <button className="action-button" onClick={() => deleteItem(item)}>
+            <button className="action-button" onClick={() => deleteItem?.(item)}>
               <FontAwesomeIcon title="Delete" icon={faTrash} />
             </button>
           </>
