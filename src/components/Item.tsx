@@ -67,17 +67,14 @@ export const ItemComponent = ({
           className="done-checkbox"
         />
         {edit ? (
-          <>
-            <input
-              autoFocus
-              type="text"
-              maxLength={48}
-              className="text-input"
-              value={temp}
-              onChange={(e) => setTemp(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-            />
-          </>
+          <input
+            autoFocus
+            type="text"
+            className="text-input"
+            value={temp}
+            onChange={(e) => setTemp(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
+          />
         ) : (
           <span className={item.done ? 'strikethrough' : ''}>{item.name}</span>
         )}

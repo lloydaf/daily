@@ -116,36 +116,30 @@ export const Home = () => {
   }
 
   return (
-    <div className="flex column">
-      <Link
-        style={{ alignSelf: 'flex-end', margin: '0.5rem 1rem' }}
-        to="/daily/archive"
-      >
-        Archive
-      </Link>
+    <div className="flex column" style={{ minHeight: '100vh', padding: '1em' }}>
       <div className="flex column outline">
+        <Link to="/daily/archive" style={{ alignSelf: 'flex-end' }}>
+          Archive
+        </Link>
         {dateStr && <h2>{new Date(dateStr).toDateString()}</h2>}
-        <div
-          style={{ width: '100%', margin: '0.5rem 1rem' }}
-          className="flex row"
-        >
+        <div className="flex row" style={{ width: '100%' }}>
           <div className="link flex row" onClick={() => setDateOffset(-1)}>
-            <FontAwesomeIcon style={{ margin: '0 0.5rem' }} icon={faBackward} />
+            <FontAwesomeIcon icon={faBackward} />
             <h3 className={dateOffset === -1 ? 'active' : 'passive'}>
-              Yesterday&apos;s tasks
+              Yesterday
             </h3>
           </div>
           <h1
             className={`link ${dateOffset === 0 ? 'active' : 'passive'}`}
             onClick={() => setDateOffset(0)}
           >
-            Today&apos;s tasks
+            Today
           </h1>
           <div className="link flex row" onClick={() => setDateOffset(1)}>
             <h3 className={dateOffset === 1 ? 'active' : 'passive'}>
-              Tomorrow&apos;s tasks
+              Tomorrow
             </h3>
-            <FontAwesomeIcon style={{ margin: '0 0.5rem' }} icon={faForward} />
+            <FontAwesomeIcon icon={faForward} />
           </div>
         </div>
         <button
@@ -155,18 +149,28 @@ export const Home = () => {
         >
           Add Task
         </button>
-        {dailyItems.map((item, index) => (
-          <ItemComponent
-            key={index}
-            item={item}
-            toggleItemCheck={toggleItemCheck}
-            deleteItem={deleteItem}
-            moveToNextDay={moveToNextDay}
-            dateOffset={dateOffset}
-            onEdit={onEdit}
-          />
-        ))}
-        {dailyItems.length === 0 && <h4>No tasks for the day</h4>}
+        <div
+          style={{
+            width: '100%',
+            alignSelf: 'stretch',
+            marginTop: '1em',
+            paddingLeft: '2em',
+            paddingRight: '2em',
+          }}
+        >
+          {dailyItems.map((item, index) => (
+            <ItemComponent
+              key={index}
+              item={item}
+              toggleItemCheck={toggleItemCheck}
+              deleteItem={deleteItem}
+              moveToNextDay={moveToNextDay}
+              dateOffset={dateOffset}
+              onEdit={onEdit}
+            />
+          ))}
+          {dailyItems.length === 0 && <h4>No tasks for the day</h4>}
+        </div>
       </div>
     </div>
   )

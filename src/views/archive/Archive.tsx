@@ -28,12 +28,45 @@ export const Archive = () => {
     setItems(parsedItems)
   }, [])
   return (
-    <div>
-      <Link to="/daily">Back</Link>
-      <div>
+    <div style={{ minHeight: '100vh', padding: '1em' }}>
+      <div
+        style={{
+          minWidth: '20em',
+          maxWidth: '56em',
+          width: '90%',
+          background: 'white',
+          borderRadius: '1em',
+          margin: '2em auto',
+          padding: '2em',
+          boxShadow: '0 1.25em 3.75em rgba(0, 0, 0, 0.3)',
+        }}
+      >
+        <Link
+          to="/daily"
+          style={{
+            display: 'inline-block',
+            color: '#667eea',
+            textDecoration: 'none',
+            fontWeight: 600,
+            padding: '0.5em 1em',
+            borderRadius: '0.5em',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          Back
+        </Link>
         {items?.map((day) => (
-          <div key={day.date}>
-            <h2>{day.date}</h2>
+          <div key={day.date} style={{ marginTop: '2em' }}>
+            <h2
+              style={{
+                margin: '0 0 1em 0',
+                fontSize: '1.25em',
+                fontWeight: 600,
+                color: '#4a5568',
+              }}
+            >
+              {day.date}
+            </h2>
             {day.value.map((item: Item) => (
               <ItemComponent key={item.id} item={item} />
             ))}
